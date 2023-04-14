@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 int equal(int a, int b)
 {
@@ -35,29 +36,29 @@ int main(int argc, char const **argv)
     int b = atoi(argv[3]);
     char const *expression = argv[2];
 
-    if (expression == "-eq")
-    {
-        return equal(a, b);
-    }
-    else if (expression == "-ge")
-    {
-        return greater_or_equal(a, b);
-    }
-    else if (expression = "-gt")
-    {
-        return greater(a, b);
-    }
-    else if (expression == "-le")
-    {
-        return less_or_equal(a, b);
-    }
-    else if (expression == "-lt")
-    {
-        return less_or_equal(a, b);
-    }
-    else if (expression == "-ne")
+    if (strcmp(expression, "-eq")==0)
     {
         return !equal(a, b);
+    }
+    else if (strcmp(expression, "-ge")==0)
+    {
+        return !greater_or_equal(a, b);
+    }
+    else if (strcmp(expression, "-gt")==0)
+    {
+        return !greater(a, b);
+    }
+    else if (strcmp(expression, "-le")==0)
+    {
+        return !less_or_equal(a, b);
+    }
+    else if (strcmp(expression, "-lt")==0)
+    {
+        return !less(a, b);
+    }
+    else if (strcmp(expression, "-ne")==0)
+    {
+        return equal(a, b);
     }
     else
     {
