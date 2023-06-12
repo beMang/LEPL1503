@@ -29,11 +29,7 @@ double getPrice(product_t prod){
  */
 int prodEquals(product_t *ptrProd, product_t prod)
 {
-    if(strcmp(ptrProd->name, prod.name)==0 && ptrProd->price==prod.price){
-        return 1;
-    } else {
-        return 0;
-    }
+    return (strcmp(ptrProd->name, prod.name)==0 && ptrProd->price==prod.price) ? 1 : 0;
 }
 
 /*
@@ -43,9 +39,7 @@ int prodEquals(product_t *ptrProd, product_t prod)
  */
 char* getPtrName(product_t *ptrProd){
     char *result = malloc(sizeof(char)*(strlen(ptrProd->name)+1));
-    if(result==NULL){
-        return NULL;
-    }
+    if(result==NULL) return NULL;
     strcpy(result, ptrProd->name);
     return result;
 }
@@ -56,9 +50,7 @@ char* getPtrName(product_t *ptrProd){
  */
 char* getName(product_t prod){
     char *result = malloc(sizeof(char)*(strlen(prod.name)+1));
-    if(result==NULL){
-        return NULL;
-    }
+    if(result==NULL) return NULL;
     strcpy(result, prod.name);
     return result;
 }

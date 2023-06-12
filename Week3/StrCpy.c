@@ -1,5 +1,4 @@
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
 /*
 * Creates a buffer that has the same size as src, and copies the content of src to this buffer.
@@ -10,24 +9,15 @@
 * Remember that strings are terminated with '\0' and that strlen("abc") returns 3 even if 4 bytes are required to store this string.
 */
 char *buf_strcpy(const char *src) {
+    if (src==NULL) return NULL;
     int len = strlen(src);
-    char *str = malloc(sizeof(char)*(len+1)) ; //Use malloc to create the buffer
-    if(str==NULL){
-        return NULL;
-    }
-    while (*src!='\0')
+    char* result = malloc(sizeof(char)*(len+1));
+    if (result==NULL) return NULL;
+    for (size_t i = 0; i < len+1; i++)
     {
-        *str = *src;
-        str++;
+        *result=*src;
+        result++;
         src++;
     }
-    *str = '\0';
-    return str - len;
-}
-
-int main(int argc, char const *argv[])
-{
-    char test[] = "adrien";
-    printf("%s", buf_strcpy(test));
-    return 0;
+    return result-len-1;
 }

@@ -16,25 +16,17 @@ typedef struct bt{
 } bt_t;
 
 int contain_helper(struct node *node, int value){
-    if(node==NULL){
-        return 0;
-    }
+    if(node==NULL) return 0;
     if (node->value==value){
         return 1;
     } else {
-        if(value<node->value){
-            return contain_helper(node->left, value);
-        } else {
-            return contain_helper(node->right, value);
-        }
+        return (value<node->value) ? contain_helper(node->left, value) : contain_helper(node->right, value);
     }
 }
 /*
 * Return 1 if there is a node containing @value in @tree and 0 otherwise.
 */
 int contains(bt_t* tree, int value){
-    if(tree==NULL){
-        return 0;
-    }
+    if(tree==NULL) return 0;
     return contain_helper(tree->root, value);
 }
