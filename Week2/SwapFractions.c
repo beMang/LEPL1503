@@ -12,8 +12,3 @@ void swap(struct fract_t *a, struct fract_t *b)
     *b = *a;
     *a = temp;
 }
-
-int main(int argc, char const *argv[])
-{
-    return 0;
-}

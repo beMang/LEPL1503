@@ -30,11 +30,3 @@ int strcasecmp(const char *s1, const char *s2) {
         return 1;
     }
 }
-
-
-int main(int argc, char const *argv[])
-{
-    char str1[] = "Adrien";
-    char str2[] = "Victor";
-    printf("%d", strcasecmp(str1, str2));
-}

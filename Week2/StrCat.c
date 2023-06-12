@@ -2,7 +2,7 @@
 
 char *strcat2(char *dest, const char *src)
 {
-    char *result = dest;
+    char *result = dest; //On garde un pointeur vers le début de la chaine de caractère
     while (*dest != '\0')
     {
         dest++;
@@ -26,11 +26,4 @@ int strlen(const char *s)
         i++;
     }
     return i;
-}
-
-int main(int argc, char const *argv[])
-{
-    char s[20] = "Adrien";
-    strcat2(s, "afjdklm");
-    printf("%s\n", s);
 }
