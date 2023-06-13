@@ -15,23 +15,22 @@
  *       return -2 if index >= length of array.
  */
 int get(char *filename, int index) {
-    int error = -1;
     int fd = open(filename, O_RDONLY);
-    if (fd==-1) return error;
+    if (fd==-1) return -1;
 
     struct stat* stat_buff = malloc(sizeof(struct stat));
-    if (fstat(fd, stat_buff)==-1) return error;
+    if (fstat(fd, stat_buff)==-1) return -1;
     int size = stat_buff->st_size;
-    int n = size/sizeof(int);
+    int n = size/sizeof(int); //Nombre d'entier
     if(index>=n) return -2;
 
-    int* numbers = mmap(NULL, size, PROT_READ, MAP_SHARED,fd, 0); //Place le fichier en mémoire
-    if (numbers == MAP_FAILED) return error;
+    int* numbers = mmap(NULL, size, PROT_READ, MAP_SHARED,fd, 0);
+    if (numbers == MAP_FAILED) return -1;
 
     int result = numbers[index];
     
-    if (munmap(numbers, size)==-1) return error;
-    if (close(fd) < 0) return error;
+    if (munmap(numbers, size)==-1) return -1;
+    if (close(fd)==-1) return -1;
     return result;
 }
 
@@ -42,7 +41,7 @@ int get(char *filename, int index) {
  *       do nothing in case of errors
  */
 void set(char *filename, int index, int value) {
-    int fd = open(filename, O_RDWR); //On ouvre le fichier, ne pas oublier les permissions
+    int fd = open(filename, O_RDWR);
     if (fd==-1) return;
 
     struct stat* stat_buff = malloc(sizeof(struct stat));
@@ -51,13 +50,12 @@ void set(char *filename, int index, int value) {
     int n = size/sizeof(int);
     if(index>=n) return;
     
-    int *mem = mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0); //On place le fichier directement en mémoire
-    if (mem == MAP_FAILED) printf("ça pète\n");
+    int *mem = mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+    if (mem == MAP_FAILED) return;
 
     mem[index] = value;
 
-    if (msync(mem, size, MS_SYNC)==-1) return; //On force à écrire sur le disque
-
-    if (munmap(mem, size)==-1) return; //On ferme la zone mémoire allouée
-    if (close(fd) < 0) return;
+    if (msync(mem, size, MS_SYNC)==-1) return; //force écriture
+    if (munmap(mem, size)==-1) return;
+    if (close(fd)==-1) return;
 }

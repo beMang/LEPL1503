@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -40,31 +39,4 @@ int sum_file(char *filename) {
     if (munmap(numbers, size)==-1) return -4;
     if (close(fd) < 0) return -2;
     return sum;
-}
-
-
-/**
- * @brief Créée un fichier binaire contenant un tableau d'entier
- * 
- * @param filename 
- * @param numbers 
- * @param size 
- * @return int 
- */
-int createFile(char *filename, int* numbers, int size)
-{
-    int needed = size * sizeof(int);
-    int fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, (mode_t)0600); //On ouvre le fichier, ne pas oublier les permissions
-    if (fd==-1) return -1;
-
-    if(ftruncate(fd, size*sizeof(int))==-1) return -6; //Met le fichier à la bonne taille
-    int *mem = mmap(NULL, needed, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0); //On place le fichier directement en mémoire
-    if (mem == MAP_FAILED) return -3;
-
-    memcpy(mem, numbers, needed); //On modifie la zone mémoire
-    if (msync(mem, needed, MS_SYNC)==-1) return -5; //On force à écrire sur le disque
-
-    if (munmap(mem, needed)==-1) return -4; //On ferme la zone mémoire allouée
-    if (close(fd) < 0) return -2;
-    return 0;
 }

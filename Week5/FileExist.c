@@ -19,9 +19,3 @@ int file_exists(char *filename)
     close(desc);
     return 0;
 }
-
-int main(int argc, char const *argv[])
-{
-    printf("%d", file_exists(argv[1]));
-    return 0;
-}
