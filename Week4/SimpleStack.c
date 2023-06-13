@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -20,17 +19,15 @@ struct node {
 */
 
 int pop(struct node **head, char *result){
-    if (head==NULL ||*head==NULL || strcpy(result, (*head)->name) == NULL){
-        return 1;
-    }
-    struct node *tmp = *head;
-    free((*head)->name);
+    if(head==NULL || *head==NULL || strcpy(result, (*head)->name)==NULL) return 1;
+    struct node* tmp = *head;
     *head = (*head)->next;
+    free(tmp->name);
     free(tmp);
     return 0;
 }
 
-    /**
+/**
 * Add @name at the "top" of the stack.
 *
 * @head : pointer to the top of the stack
@@ -40,41 +37,13 @@ int pop(struct node **head, char *result){
 */
 
 int push(struct node **head, const char *value){
-    char *copy = malloc(sizeof(char)*(strlen(value)+1));
-    if(copy==NULL || head==NULL){
-        return 1;
-    }
-    strcpy(copy, value);
-    struct node new_node = {*head, copy};
-    struct node *new_ptr = (struct node *) malloc(sizeof(struct node));
-    if(new_ptr==NULL){
-        return 1;
-    }
-    if (new_ptr==NULL){
-        return 1;
-    }
-    *new_ptr = new_node;
-    *head = new_ptr;
-    return 0;
-}
-
-int main(int argc, char const *argv[])
-{
-    struct node first = {NULL, "allo"};
-    if(first.next==NULL){
-        printf("hey");
-    }
-    struct node *ptr1 = &first;
-    struct node **head = &ptr1;
-    if((*head)->next == NULL){
-        printf("Bonjour");
-    }
-    char *result = malloc(10*sizeof(char));
-    char result2[100];
-    push(head, "yolo");
-    pop(head, result);
-    pop(head,result2);
-    printf("%s et %s \n", (*head)->name, result);
-    printf("%s", result2);
+    if(head==NULL || value==NULL) return 1;
+    struct node* new = malloc(sizeof(struct node));
+    if (new==NULL) return 1;
+    new->next = *head;
+    new->name = malloc(sizeof(char)*(1+strlen(value)));
+    if(new->name==NULL) return 1;
+    strcpy(new->name, value);
+    *head = new;
     return 0;
 }

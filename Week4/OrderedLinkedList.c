@@ -33,9 +33,7 @@ int insert(node_t **head, char val, int (*cmp)(char,char)) {
     {
         if(cmp(val, current->val)<0){
             node_t* new_node = malloc(sizeof(node_t));
-            if(new_node==NULL){
-                return -1;
-            }
+            if(new_node==NULL) return -1;
             new_node->val = val;
             new_node->next = current;
             if(previous!=NULL){
@@ -53,9 +51,7 @@ int insert(node_t **head, char val, int (*cmp)(char,char)) {
     }
     //Ajoute à la fin :
     node_t* new_node = malloc(sizeof(node_t));
-    if(new_node==NULL){
-        return -1;
-    }
+    if(new_node==NULL) return -1;
     new_node->val = val;
     new_node->next = NULL;
     if(previous!=NULL){
@@ -63,23 +59,5 @@ int insert(node_t **head, char val, int (*cmp)(char,char)) {
     } else {
         *head = new_node;
     }
-    return 0;
-}
-
-void print_list(struct node *head)
-{
-    if (head != NULL)
-    {
-        printf("%c\n", head->val);
-        print_list(head->next);
-    }
-}
-
-int main(int argc, char const *argv[])
-{
-    node_t lst = {'b', NULL};
-    node_t* ptr1 = &lst;
-    insert(&ptr1, 'd', compare);
-    print_list(ptr1);
     return 0;
 }

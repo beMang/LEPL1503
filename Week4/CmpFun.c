@@ -19,14 +19,9 @@ int f2(int test){
     return test +1;
 }
 
-
 int main(int argc, char const *argv[])
 {
-    int(*fun1)(int) = &f1;
-    int(*fun2)(int) = &f2;
-
-    int result = cmp_func(fun1, fun2);
+    int result = cmp_func(&f1, &f2);
     printf("%d", result);
-    /* code */
     return 0;
 }

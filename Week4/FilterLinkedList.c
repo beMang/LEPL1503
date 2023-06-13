@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 struct node
 {
@@ -18,42 +17,10 @@ struct node
  */
 struct node *pair_filter(struct node *head)
 {
-    if (head == NULL)
-    {
-        return NULL;
-    }
+    if (head == NULL) return NULL;
     struct node *copy = malloc(sizeof(struct node));
-    if (copy == NULL)
-    {
-        return NULL;
-    }
+    if (copy == NULL) return NULL;
     memcpy(copy, head, sizeof(struct node));
-    if (head->next != NULL)
-    {
-        copy->next = pair_filter(head->next->next);
-    }
+    if (head->next != NULL) copy->next = pair_filter(head->next->next);
     return copy;
-}
-
-void print_list(struct node *head)
-{
-    if (head != NULL)
-    {
-        printf("%s\n", head->name);
-        print_list(head->next);
-    }
-}
-
-int main(int argc, char const *argv[])
-{
-    struct node test = {NULL, 4, "4ème"};
-    struct node test2 = {&test, 3, "3ème"};
-    struct node test3 = {&test2, 2, "2ème"};
-    struct node test4 = {&test3, 1, "1ème"};
-    struct node test5 = {&test4, 0, "0ème"};
-
-    print_list(&test5);
-    struct node *ptr = pair_filter(&test5);
-    print_list(ptr);
-    return 0;
 }
