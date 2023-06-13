@@ -27,28 +27,15 @@
 *         -4 if you can't join the second thread
 */
 int doMyWork(void* long_computing(void*), void* backup_computing(void*), char* string, int ret_value){
-    pthread_t first;
-    pthread_t second;
-    int* r1;
+    pthread_t t1;
+    int* result;
 
-    int err;
-
-    //Création premier thread :
-    err = pthread_create(&first, NULL, long_computing, (void*) string);
-    if (err!=0) return -1;
-
-    err = pthread_join(first, (void**)&r1);
-    if (err!=0) return -2;
-
-    if(*r1==ret_value){
-        return ret_value;
+    if(pthread_create(&t1, NULL, long_computing, (void*) string)!=0) return -1;
+    if(pthread_join(t1, (void**) &result)!=0) return -2;
+    if(*result!=ret_value){
+        pthread_t t2;
+        if(pthread_create(&t2, NULL, backup_computing, (void*) string)!=0) return -3;
+        if(pthread_join(t2, (void**) &result)!=0) return -4;
     }
-
-    //On utilise le backup :
-    err = pthread_create(&second, NULL, backup_computing, (void*) string);
-    if (err!=0) return -3;
-
-    err = pthread_join(second, (void**)&r1);
-    if (err!=0) return -4;
-    return *r1;
+    return *result;
 }

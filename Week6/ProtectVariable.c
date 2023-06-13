@@ -12,11 +12,9 @@
 int protect(void inc(void), int nb, pthread_mutex_t* mutex){
     for (size_t i = 0; i < nb; i++)
     {
-        int err = pthread_mutex_lock(mutex);
-        if(err!=0) return -1;
+        if (pthread_mutex_lock(mutex)!=0) return -1;
         inc();
-        err = pthread_mutex_unlock(mutex);
-        if(err!=0) return -1;
+        if(pthread_mutex_unlock(mutex)!=0) return -1;
     }
     return 0;
 }

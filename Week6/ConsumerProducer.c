@@ -21,9 +21,7 @@ typedef struct data {
 * @return 0 if no error, -1 otherwise
 */
 int put(data_t** buf, int len, int* first, int* last, int* in, data_t* d){
-    if (*in==len){
-        return -1; //Le buffer est complet
-    }
+    if (*in==len) return -1; //Le buffer est complet
     buf[*last] = d ;
     (*last)++;
     if(*last==len) *last = 0;
@@ -45,9 +43,7 @@ int put(data_t** buf, int len, int* first, int* last, int* in, data_t* d){
 * @return the pointer to the element that you get if no error, NULL otherwise
 */
 data_t* get(data_t** buf, int len, int* first, int* last, int* in){
-    if(*in==0){
-        return NULL;
-    }
+    if(*in==0) return NULL;
     data_t* retrieve_data = buf[*first];
     buf[*first] = NULL;
     (*first)++;

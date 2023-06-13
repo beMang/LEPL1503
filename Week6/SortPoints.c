@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -53,47 +52,36 @@ int compar(const void* s1, const void* s2){
 */
 int sort(char* filename){
     int fd = open(filename, O_RDWR);
-    if (fd == -1)
-        return -1;
+    if (fd==-1) return -1;
 
-    struct stat *stats = malloc(sizeof(struct stat));
-    if (fstat(fd, stats) == -1){
+    struct stat* stats = malloc(sizeof(struct stat));
+    if (fstat(fd, stats)==-1) {
         close(fd);
         return -5;
     }
-
     int size = stats->st_size;
-    int n = size/sizeof(points_t);
 
-    points_t* content = (points_t*) mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0); // Place le premier fichier en mémoire
-    if (content == MAP_FAILED){
+    struct points* datas = (points_t*) mmap(NULL, size, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0); //flags pour écrire et lire + cast pour le bon type
+    if (datas==MAP_FAILED) {
         close(fd);
         return -2;
     }
 
-    //Average :
-    points_t* current = content;
+    int n = size/sizeof(points_t);
     for (size_t i = 0; i < n; i++)
     {
-        float average = (current->LEPL1103 + current->LEPL1108 + current->LEPL1203 + current->LEPL1302 + current->LEPL1402)/5;
-        current->average = average;
-        current++;
+        datas[i].average = (datas[i].LEPL1103 + datas[i].LEPL1108 + datas[i].LEPL1203 + datas[i].LEPL1302 + datas[i].LEPL1402)/5;
     }
     
-    //Then sort the arrray :
-    qsort(content, n, sizeof(points_t), compar);
-
-    //On force/sauve les modifs : 
-    if (msync(content, size, MS_SYNC) == -1){
-        munmap(content, size);
+    qsort(datas, n, sizeof(points_t), compar);
+    if (msync(datas, size, MS_SYNC)==-1) {
+        munmap(datas, size);
         close(fd);
         return -4;
     }
-
-    // On ferme les zones mémoires ainsi que les fichiers :
-    if (munmap(content, size) == -1)
-        return -3;
-    if (close(fd) < 0)
-        return -6;
+    if(munmap(datas, size)==-1) {
+        close(fd);
+        return -3;}
+    if(close(fd)==-1) return -6;
     return 0;
 }
